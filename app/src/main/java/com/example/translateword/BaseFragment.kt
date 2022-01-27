@@ -1,32 +1,12 @@
 package com.example.translateword
 
-import android.os.Bundle
-import moxy.MvpAppCompatActivity
+import com.example.translateword.mvvm.BaseViewMode
 import moxy.MvpAppCompatFragment
 
-abstract class BaseFragment<T : AppState> : MvpAppCompatFragment(), View {
+abstract class BaseFragment<T : AppState, I : Interactor<T>> : MvpAppCompatFragment() {
 
-    // Храним ссылку на презентер
-    protected lateinit var presenter: Presenter<T, View>
+    abstract val model: BaseViewMode<T>
 
-    protected abstract fun createPresenter(): Presenter<T, View>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = createPresenter()
-    }
-
-    // Когда View готова отображать данные, передаём ссылку на View в презентер
-    override fun onStart() {
-        super.onStart()
-        presenter.attachView(this)
-    }
-
-    // При пересоздании или уничтожении View удаляем ссылку, иначе в презентере
-    // будет ссылка на несуществующую View
-    override fun onStop() {
-        super.onStop()
-        presenter.detachView(this)
-    }
+    abstract fun renderData(appState: T)
 
 }

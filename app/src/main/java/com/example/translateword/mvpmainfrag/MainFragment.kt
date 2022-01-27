@@ -1,25 +1,47 @@
 package com.example.translateword.mvpmainfrag
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translateword.*
 import com.example.translateword.databinding.FragmentMainBinding
+import com.example.translateword.mvvm.BaseViewMode
+import com.example.translateword.mvvm.MainViewModel
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
-class MainFragment : BaseFragment<AppState>() {
+class MainFragment : BaseFragment<AppState, MainInteractor>() {
+
+    @Inject
+    internal lateinit var viewModalFactory: ViewModelProvider.Factory
 
     private var binding: FragmentMainBinding? = null
     private var adapter: MainFragmentAdapter? = null
+    override lateinit var model: MainViewModel
+
+
+    private val observer = Observer<AppState> {renderData(it)}
+
+
     private val onListItemClickListener: MainFragmentAdapter.OnListItemClickListener =
         object : MainFragmentAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
             }
         }
+
+    //model = viewModalFactory.create(MainViewModel::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,13 +51,18 @@ class MainFragment : BaseFragment<AppState>() {
     }.root
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onViewCreated(view, savedInstanceState)
+
+        model = viewModalFactory.create(MainViewModel::class.java)
+        model.subscribe().observe(requireActivity(), Observer<AppState> { renderData(it) })
         binding?.searchFab?.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object :
                 SearchDialogFragment.OnSearchClickListener {
+                @SuppressLint("FragmentLiveDataObserve")
                 override fun onClick(searchWord: String) {
-                    presenter.getData(searchWord, true)
+                    model.getData(searchWord, true).observe(this@MainFragment, observer)
                 }
             })
             searchDialogFragment.show(parentFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
@@ -83,15 +110,11 @@ class MainFragment : BaseFragment<AppState>() {
 
     }
 
-    override fun createPresenter(): Presenter<AppState, com.example.translateword.View> {
-        return MainFragmentPresenterImpl()
-    }
-
     private fun showErrorScreen(error: String?) {
         showViewError()
         binding?.errorTextview?.text = error ?: getString(R.string.undefined_error)
         binding?.reloadButton?.setOnClickListener {
-            presenter.getData("hi", true)
+            model.getData("hi", true).observe(requireActivity(), observer)
         }
     }
 
@@ -117,5 +140,7 @@ class MainFragment : BaseFragment<AppState>() {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG =
             "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
     }
+
+
 
 }
