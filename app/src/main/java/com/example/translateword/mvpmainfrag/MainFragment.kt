@@ -1,37 +1,27 @@
 package com.example.translateword.mvpmainfrag
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translateword.*
 import com.example.translateword.databinding.FragmentMainBinding
-import com.example.translateword.mvvm.BaseViewMode
 import com.example.translateword.mvvm.MainViewModel
-import dagger.android.AndroidInjection
-import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : BaseFragment<AppState, MainInteractor>() {
 
-    @Inject
-    internal lateinit var viewModalFactory: ViewModelProvider.Factory
 
     private var binding: FragmentMainBinding? = null
     private var adapter: MainFragmentAdapter? = null
     override lateinit var model: MainViewModel
 
 
-    private val observer = Observer<AppState> {renderData(it)}
+    private val observer = Observer<AppState> { renderData(it) }
 
 
     private val onListItemClickListener: MainFragmentAdapter.OnListItemClickListener =
@@ -41,21 +31,20 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
             }
         }
 
-    //model = viewModalFactory.create(MainViewModel::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = FragmentMainBinding.inflate(inflater, container, false).also {
         binding = it
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
+        model.subscribe().observe(requireActivity(), Observer<AppState> { renderData(it) })
     }.root
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        model = viewModalFactory.create(MainViewModel::class.java)
-        model.subscribe().observe(requireActivity(), Observer<AppState> { renderData(it) })
         binding?.searchFab?.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object :
@@ -69,12 +58,10 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
 
-    override fun renderData(appState: AppState) {
+
+
+        override fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
                 val dataModel = appState.data
@@ -108,6 +95,11 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
             }
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     private fun showErrorScreen(error: String?) {

@@ -2,15 +2,11 @@ package com.example.translateword.mvvm
 
 import androidx.lifecycle.LiveData
 import com.example.translateword.AppState
-import com.example.translateword.RepositoryImplementation
-import com.example.translateword.mvpmainfrag.DataSourceLocal
-import com.example.translateword.mvpmainfrag.DataSourceRemote
 import com.example.translateword.mvpmainfrag.MainInteractor
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val interactor: MainInteractor) :
+class MainViewModel(private val interactor: MainInteractor) :
     BaseViewMode<AppState>() {
 
     private var appState: AppState? = null
