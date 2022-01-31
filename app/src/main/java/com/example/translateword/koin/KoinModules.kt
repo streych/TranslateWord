@@ -1,11 +1,11 @@
 package com.example.translateword.koin
 
-import com.example.translateword.DataModel
-import com.example.translateword.Repository
-import com.example.translateword.RepositoryImplementation
+import com.example.translateword.data.DataModel
+import com.example.translateword.data.repository.Repository
+import com.example.translateword.data.repository.RepositoryImplementation
 import com.example.translateword.mvpmainfrag.MainInteractor
-import com.example.translateword.mvpmainfrag.RetrofitImplementation
-import com.example.translateword.mvpmainfrag.RoomDataBaseImplementation
+import com.example.translateword.data.datasource.RetrofitImplementation
+import com.example.translateword.data.datasource.RoomDataBaseImplementation
 import com.example.translateword.mvvm.MainViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

@@ -1,4 +1,4 @@
-package com.example.translateword.mvpmainfrag
+package com.example.translateword.mvpmainfrag.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.translateword.DataModel
+import com.example.translateword.data.DataModel
 import com.example.translateword.R
 
 

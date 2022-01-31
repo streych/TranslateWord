@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translateword.*
+import com.example.translateword.data.AppState
+import com.example.translateword.data.DataModel
 import com.example.translateword.databinding.FragmentMainBinding
+import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
 import com.example.translateword.mvvm.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,7 +54,7 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
                 SearchDialogFragment.OnSearchClickListener {
                 @SuppressLint("FragmentLiveDataObserve")
                 override fun onClick(searchWord: String) {
-                    model.getData(searchWord, true).observe(this@MainFragment, observer)
+                    model.getData(searchWord, true)
                 }
             })
             searchDialogFragment.show(parentFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
@@ -106,7 +109,7 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
         showViewError()
         binding?.errorTextview?.text = error ?: getString(R.string.undefined_error)
         binding?.reloadButton?.setOnClickListener {
-            model.getData("hi", true).observe(requireActivity(), observer)
+            model.getData("hi", true)
         }
     }
 

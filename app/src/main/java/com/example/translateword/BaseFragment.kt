@@ -1,5 +1,6 @@
 package com.example.translateword
 
+import com.example.translateword.data.AppState
 import com.example.translateword.mvvm.BaseViewMode
 import moxy.MvpAppCompatFragment
 

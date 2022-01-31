@@ -1,24 +1,30 @@
 package com.example.translateword.mvvm
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.translateword.AppState
-import com.example.translateword.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import com.example.translateword.data.AppState
+import kotlinx.coroutines.*
 
 abstract class BaseViewMode<T : AppState>(
-    protected val liveDataForViewToObserve: MutableLiveData<T> =
-        MutableLiveData(),
-    protected val compositeDisposable: CompositeDisposable =
-        CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
+    protected open val _mutableLiveData: MutableLiveData<T> =
+        MutableLiveData()
 ) : ViewModel() {
 
-    open fun getData(word: String, isOnline: Boolean): LiveData<T> =
-        liveDataForViewToObserve
+    protected val viewModelCoroutineScope = CoroutineScope(
+        Dispatchers.Main
+                + SupervisorJob()
+                + CoroutineExceptionHandler { _, throwable -> handleError(throwable) }
+    )
+
+    abstract fun handleError(error: Throwable)
+
+    abstract fun getData(word: String, isOnline: Boolean)
 
     override fun onCleared() {
-        compositeDisposable.clear()
+        cancelJob()
+    }
+
+    protected fun cancelJob() {
+        viewModelCoroutineScope.coroutineContext.cancelChildren()
     }
 }

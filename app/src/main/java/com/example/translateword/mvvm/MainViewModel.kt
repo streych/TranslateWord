@@ -1,56 +1,71 @@
 package com.example.translateword.mvvm
 
 import androidx.lifecycle.LiveData
-import com.example.translateword.AppState
+import com.example.translateword.data.AppState
+import com.example.translateword.data.DataModel
+import com.example.translateword.data.Meanings
 import com.example.translateword.mvpmainfrag.MainInteractor
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(private val interactor: MainInteractor) :
     BaseViewMode<AppState>() {
 
-    private var appState: AppState? = null
+    private val liveDataForViewToObserve: LiveData<AppState> = _mutableLiveData
 
     fun subscribe(): LiveData<AppState> {
         return liveDataForViewToObserve
     }
 
+    override fun getData(word: String, isOnline: Boolean) {
 
-
-    override fun getData(word: String, isOnline: Boolean): LiveData<AppState> {
-
-        compositeDisposable.add(
-            interactor.getData(word, isOnline)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnSubscribe(
-                    doOnSubscribe()
-                )
-                .subscribeWith(getObserver())
-        )
-
-        return super.getData(word, isOnline)
+        _mutableLiveData.value = AppState.Loading(null)
+        cancelJob()
+        viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
     }
 
-    private fun doOnSubscribe(): (Disposable) -> Unit =
-        { liveDataForViewToObserve.value = AppState.Loading(null) }
-
-
-    private fun getObserver(): DisposableObserver<AppState> {
-        return object : DisposableObserver<AppState>() {
-            override fun onNext(state: AppState) {
-                appState = state
-                liveDataForViewToObserve.value = state
-            }
-
-            override fun onError(e: Throwable) {
-                liveDataForViewToObserve.value = AppState.Error(e)
-            }
-
-            override fun onComplete() {
-
-            }
-
+    private suspend fun startInteractor(word: String, isOnline: Boolean) =
+        withContext(Dispatchers.IO) {
+            _mutableLiveData.postValue(parseSearchResults(interactor.getData(word, isOnline)))
         }
+
+    private fun parseSearchResults(data: AppState): AppState? {
+        val newSearchResults = arrayListOf<DataModel>()
+        when (data) {
+            is AppState.Success -> {
+                val searchResult = data.data
+                if(!searchResult.isNullOrEmpty()) {
+                    for (searchResult in searchResult) {
+                        parseResult(searchResult, newSearchResults)
+                    }
+                }
+            }
+        }
+        return AppState.Success(newSearchResults)
+    }
+
+    private fun parseResult(dataModel: DataModel, newSearchResults: ArrayList<DataModel>) {
+        if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
+            val newMeanings = arrayListOf<Meanings>()
+            for (meaning in dataModel.meanings) {
+                if (meaning.translation != null && !meaning.translation.translation.isNullOrBlank()) {
+                    newMeanings.add(Meanings(meaning.translation, meaning.imageUrl))
+                }
+            }
+            if (newMeanings.isNotEmpty()) {
+                newSearchResults.add(DataModel(dataModel.text, newMeanings))
+            }
+        }
+    }
+
+
+    override fun handleError(error: Throwable) {
+        _mutableLiveData.postValue(AppState.Error(error))
+    }
+
+    override fun onCleared() {
+        _mutableLiveData.postValue(AppState.Success(null))
+        super.onCleared()
     }
 }

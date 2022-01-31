@@ -1,7 +1,7 @@
 package com.example.translateword
 
+import com.example.translateword.data.AppState
+
 interface View {
-    // Нижний уровень. View знает о контексте и фреймворке
-    //Показываем пользователю Перевод или Ошибку, Загрузку
     fun renderData(appState: AppState)
 }
