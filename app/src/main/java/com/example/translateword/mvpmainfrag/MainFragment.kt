@@ -1,23 +1,34 @@
 package com.example.translateword.mvpmainfrag
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.translateword.*
+import com.example.translateword.BaseFragment
+import com.example.translateword.R
+import com.example.translateword.SearchDialogFragment
+import com.example.translateword.data.AppState
+import com.example.translateword.data.DataModel
 import com.example.translateword.databinding.FragmentMainBinding
+import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
+import com.example.translateword.mvvm.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainFragment : BaseFragment<AppState>() {
+class MainFragment : BaseFragment<AppState, MainInteractor>() {
+
 
     private var binding: FragmentMainBinding? = null
     private var adapter: MainFragmentAdapter? = null
+    override lateinit var model: MainViewModel
+
     private val onListItemClickListener: MainFragmentAdapter.OnListItemClickListener =
         object : MainFragmentAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -26,28 +37,28 @@ class MainFragment : BaseFragment<AppState>() {
         savedInstanceState: Bundle?
     ) = FragmentMainBinding.inflate(inflater, container, false).also {
         binding = it
+        val viewModel: MainViewModel by viewModel()
+        model = viewModel
+        model.subscribe().observe(requireActivity(), Observer<AppState> { renderData(it) })
     }.root
 
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding?.searchFab?.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object :
                 SearchDialogFragment.OnSearchClickListener {
+                @SuppressLint("FragmentLiveDataObserve")
                 override fun onClick(searchWord: String) {
-                    presenter.getData(searchWord, true)
+                    model.getData(searchWord, true)
                 }
             })
             searchDialogFragment.show(parentFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
-
-    override fun renderData(appState: AppState) {
+        override fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
                 val dataModel = appState.data
@@ -56,10 +67,12 @@ class MainFragment : BaseFragment<AppState>() {
                 } else {
                     showViewSuccess()
                     if (adapter == null) {
-                        binding?.mainActivityRecyclerview?.layoutManager =
-                            LinearLayoutManager(requireContext().applicationContext)
-                        binding?.mainActivityRecyclerview?.adapter =
-                            MainFragmentAdapter(onListItemClickListener, dataModel)
+                        binding?.apply {
+                            mainActivityRecyclerview.layoutManager =
+                                LinearLayoutManager(requireContext().applicationContext)
+                            mainActivityRecyclerview.adapter =
+                                MainFragmentAdapter(onListItemClickListener, dataModel)
+                        }
                     } else {
                         adapter!!.setData(dataModel)
                     }
@@ -68,12 +81,16 @@ class MainFragment : BaseFragment<AppState>() {
             is AppState.Loading -> {
                 showViewLoading()
                 if (appState.progress != null) {
-                    binding?.progressBarHorizontal?.visibility = VISIBLE
-                    binding?.progressBarRound?.visibility = GONE
-                    binding?.progressBarHorizontal?.progress = appState.progress
+                    binding?.apply {
+                        progressBarHorizontal.visibility = VISIBLE
+                        progressBarRound.visibility = GONE
+                        progressBarHorizontal.progress = appState.progress
+                    }
                 } else {
-                    binding?.progressBarHorizontal?.visibility = GONE
-                    binding?.progressBarRound?.visibility = VISIBLE
+                    binding?.apply {
+                        progressBarHorizontal.visibility = GONE
+                        progressBarRound.visibility = VISIBLE
+                    }
                 }
             }
             is AppState.Error -> {
@@ -83,34 +100,43 @@ class MainFragment : BaseFragment<AppState>() {
 
     }
 
-    override fun createPresenter(): Presenter<AppState, com.example.translateword.View> {
-        return MainFragmentPresenterImpl()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 
     private fun showErrorScreen(error: String?) {
         showViewError()
-        binding?.errorTextview?.text = error ?: getString(R.string.undefined_error)
-        binding?.reloadButton?.setOnClickListener {
-            presenter.getData("hi", true)
+        binding?.apply {
+            errorTextview.text = error ?: getString(R.string.undefined_error)
+            reloadButton.setOnClickListener {
+                model.getData("hi", true)
+            }
         }
     }
 
     private fun showViewSuccess() {
-        binding?.successLinearLayout?.visibility = VISIBLE
-        binding?.loadingFrameLayout?.visibility = GONE
-        binding?.errorLinearLayout?.visibility = GONE
+        binding?.apply {
+            successLinearLayout.visibility = VISIBLE
+            loadingFrameLayout.visibility = GONE
+            errorLinearLayout.visibility = GONE
+        }
     }
 
     private fun showViewLoading() {
-        binding?.successLinearLayout?.visibility = GONE
-        binding?.loadingFrameLayout?.visibility = VISIBLE
-        binding?.errorLinearLayout?.visibility = GONE
+        binding?.apply {
+            successLinearLayout.visibility = GONE
+            loadingFrameLayout.visibility = VISIBLE
+            errorLinearLayout.visibility = GONE
+        }
     }
 
     private fun showViewError() {
-        binding?.successLinearLayout?.visibility = GONE
-        binding?.loadingFrameLayout?.visibility = GONE
-        binding?.errorLinearLayout?.visibility = VISIBLE
+        binding?.apply {
+            successLinearLayout.visibility = GONE
+            loadingFrameLayout.visibility = GONE
+            errorLinearLayout.visibility = VISIBLE
+        }
     }
 
     companion object {

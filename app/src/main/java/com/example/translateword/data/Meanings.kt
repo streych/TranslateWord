@@ -1,4 +1,4 @@
-package com.example.translateword
+package com.example.translateword.data
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,8 +1,8 @@
-package com.example.translateword
+package com.example.translateword.data.repository
 
 import io.reactivex.Observable
 
 interface Repository<T> {
     //Получение данных для интерактора
-    fun getData(word: String): Observable<T>
+    suspend fun getData(word: String): T
 }

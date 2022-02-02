@@ -1,4 +1,4 @@
-package com.example.translateword.mvpmainfrag
+package com.example.translateword.mvpmainfrag.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.translateword.DataModel
+import com.example.translateword.data.DataModel
 import com.example.translateword.R
+import com.example.translateword.databinding.FragmentMainBinding
+import com.example.translateword.databinding.FragmentMainRecyclerviewItemBinding
 
 
 class MainFragmentAdapter(
@@ -16,12 +18,13 @@ class MainFragmentAdapter(
 ) : RecyclerView.Adapter<MainFragmentAdapter.RecyclerItemViewHolder>() {
 
 
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(val binding: FragmentMainRecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text = data.text
-                itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
-                    data.meanings?.get(0)?.translation?.translation
+                binding.apply {
+                    headerTextviewRecyclerItem.text = data.text
+                    descriptionTextviewRecyclerItem.text = data.meanings?.get(0)?.translation?.translation
+                }
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
         }
@@ -33,10 +36,8 @@ class MainFragmentAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         RecyclerItemViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.fragment_main_recyclerview_item,
-                parent,
-                false) as View)
+            FragmentMainRecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) =
         holder.bind(data[position])

@@ -1,4 +1,4 @@
-package com.example.translateword.mvpmainfrag
+package com.example.translateword.data.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -20,7 +20,4 @@ class BaseInterceptor private constructor(): Interceptor {
         val interceptor: BaseInterceptor
         get() = BaseInterceptor()
     }
-
-
-
 }
