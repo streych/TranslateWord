@@ -14,6 +14,8 @@ import com.example.translateword.SearchDialogFragment
 import com.example.translateword.data.AppState
 import com.example.translateword.data.DataModel
 import com.example.translateword.databinding.FragmentMainBinding
+import com.example.translateword.description.DescriptionActivity
+import com.example.translateword.description.convertMeaningsToString
 import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
 import com.example.translateword.mvvm.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,7 +30,16 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
     private val onListItemClickListener: MainFragmentAdapter.OnListItemClickListener =
         object : MainFragmentAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
-                //Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
+                startActivity(
+                    DescriptionActivity.getIntent(
+                        activity?.applicationContext,
+                        data.text!!,
+                        convertMeaningsToString(data.meanings!!),
+                        data.meanings[0].imageUrl
+                    )
+                )
+
+
             }
         }
 

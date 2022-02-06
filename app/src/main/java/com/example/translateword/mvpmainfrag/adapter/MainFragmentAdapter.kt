@@ -2,14 +2,11 @@ package com.example.translateword.mvpmainfrag.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.translateword.data.DataModel
-import com.example.translateword.R
-import com.example.translateword.databinding.FragmentMainBinding
 import com.example.translateword.databinding.FragmentMainRecyclerviewItemBinding
+import com.example.translateword.description.convertMeaningsToString
 
 
 class MainFragmentAdapter(
@@ -20,10 +17,10 @@ class MainFragmentAdapter(
 
     inner class RecyclerItemViewHolder(val binding: FragmentMainRecyclerviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DataModel) {
-            if (layoutPosition != RecyclerView.NO_POSITION) {
+        if (layoutPosition != RecyclerView.NO_POSITION) {
                 binding.apply {
                     headerTextviewRecyclerItem.text = data.text
-                    descriptionTextviewRecyclerItem.text = data.meanings?.get(0)?.translation?.translation
+                    descriptionTextviewRecyclerItem.text = convertMeaningsToString(data.meanings!!)
                 }
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
@@ -54,4 +51,5 @@ class MainFragmentAdapter(
     interface OnListItemClickListener {
         fun onItemClick(data: DataModel)
     }
+
 }
