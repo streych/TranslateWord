@@ -25,6 +25,9 @@
         <activity
             android:name=".description.DescriptionActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".history.HistoryActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

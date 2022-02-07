@@ -2,12 +2,15 @@ package com.example.translateword.cicerone
 
 import android.app.Application
 import com.example.translateword.koin.application
+import com.example.translateword.koin.historyScreen
 import com.example.translateword.koin.mainScreen
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
+
 
     companion object {
         lateinit var instance: App
@@ -24,7 +27,8 @@ class App : Application() {
         super.onCreate()
         instance = this
         startKoin {
-            modules(listOf(application, mainScreen))
+            androidContext(applicationContext)
+            modules(listOf(application, mainScreen, historyScreen))
         }
     }
 }

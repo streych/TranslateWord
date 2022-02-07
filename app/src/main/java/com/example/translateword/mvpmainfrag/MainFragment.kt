@@ -1,11 +1,11 @@
 package com.example.translateword.mvpmainfrag
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translateword.BaseFragment
@@ -16,6 +16,7 @@ import com.example.translateword.data.DataModel
 import com.example.translateword.databinding.FragmentMainBinding
 import com.example.translateword.description.DescriptionActivity
 import com.example.translateword.description.convertMeaningsToString
+import com.example.translateword.history.HistoryActivity
 import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
 import com.example.translateword.mvvm.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,6 +27,24 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
     private var binding: FragmentMainBinding? = null
     private var adapter: MainFragmentAdapter? = null
     override lateinit var model: MainViewModel
+
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_history, menu)
+        super.onCreateOptionsMenu(menu, menuInflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menu_history -> {
+                val intent = Intent(activity, HistoryActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+
 
     private val onListItemClickListener: MainFragmentAdapter.OnListItemClickListener =
         object : MainFragmentAdapter.OnListItemClickListener {
@@ -48,6 +67,7 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
         savedInstanceState: Bundle?
     ) = FragmentMainBinding.inflate(inflater, container, false).also {
         binding = it
+        setHasOptionsMenu(true)
         val viewModel: MainViewModel by viewModel()
         model = viewModel
         model.subscribe().observe(requireActivity(), Observer<AppState> { renderData(it) })
