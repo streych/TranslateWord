@@ -8,3 +8,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Translate Word"
 include ':app'
+include ':Core'
+include ':model'
+include ':utils'
+include ':repository'

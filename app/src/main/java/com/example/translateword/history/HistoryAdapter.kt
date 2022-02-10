@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.example.translateword.data.DataModel
+import com.example.model.data.DataModel
 import com.example.translateword.databinding.ActivityHistoryRecyclerViewItemBinding
-import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
 import java.util.*
 
 class HistoryAdapter(

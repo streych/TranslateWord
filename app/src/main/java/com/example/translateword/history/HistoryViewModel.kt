@@ -1,16 +1,12 @@
 package com.example.translateword.history
 
 import androidx.lifecycle.LiveData
-import com.example.translateword.data.AppState
-import com.example.translateword.databinding.ActivityHistoryBinding
+import com.example.model.data.AppState
 import com.example.translateword.description.parseLocalSearchResults
-import com.example.translateword.mvvm.BaseViewMode
-import kotlinx.coroutines.Job
+import com.example.core.mvvm.BaseViewMode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 
 class HistoryViewModel(private val interactor: HistoryInteractor) : BaseViewMode<AppState>() {
 

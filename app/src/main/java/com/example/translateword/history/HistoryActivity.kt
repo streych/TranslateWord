@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import com.example.translateword.data.AppState
-import com.example.translateword.data.DataModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.translateword.databinding.ActivityHistoryBinding
 import com.example.translateword.description.DescriptionActivity
-import com.example.translateword.description.convertMeaningsToString
 import com.example.translateword.view.BaseActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*

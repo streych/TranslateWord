@@ -1,7 +1,8 @@
 package com.example.translateword
 
-import com.example.translateword.data.AppState
-import com.example.translateword.mvvm.BaseViewMode
+import com.example.model.data.AppState
+import com.example.core.mvvm.BaseViewMode
+import com.example.core.mvvm.Interactor
 import moxy.MvpAppCompatFragment
 
 abstract class BaseFragment<T : AppState, I : Interactor<T>> : MvpAppCompatFragment() {

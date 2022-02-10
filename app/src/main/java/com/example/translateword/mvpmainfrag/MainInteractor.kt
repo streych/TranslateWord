@@ -1,11 +1,10 @@
 package com.example.translateword.mvpmainfrag
 
-import com.example.translateword.Interactor
-import com.example.translateword.cicerone.App
-import com.example.translateword.data.AppState
-import com.example.translateword.data.DataModel
-import com.example.translateword.data.repository.Repository
-import com.example.translateword.data.repository.RepositoryLocal
+import com.example.core.mvvm.Interactor
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
+import com.example.repository.repository.Repository
+import com.example.repository.repository.RepositoryLocal
 
 class MainInteractor(
     private val remoteRepository: Repository<List<DataModel>>,

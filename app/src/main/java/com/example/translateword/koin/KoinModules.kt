@@ -1,19 +1,18 @@
 package com.example.translateword.koin
 
 import androidx.room.Room
-import com.example.translateword.data.DataModel
-import com.example.translateword.data.datasource.RetrofitImplementation
-import com.example.translateword.data.datasource.RoomDataBaseImplementation
-import com.example.translateword.data.repository.Repository
-import com.example.translateword.data.repository.RepositoryImplementation
-import com.example.translateword.data.repository.RepositoryImplementationLocal
-import com.example.translateword.data.repository.RepositoryLocal
+import com.example.model.data.DataModel
+import com.example.repository.datasource.RetrofitImplementation
+import com.example.repository.datasource.RoomDataBaseImplementation
+import com.example.repository.repository.Repository
+import com.example.repository.repository.RepositoryImplementation
+import com.example.repository.repository.RepositoryImplementationLocal
+import com.example.repository.repository.RepositoryLocal
 import com.example.translateword.history.HistoryInteractor
 import com.example.translateword.history.HistoryViewModel
 import com.example.translateword.mvpmainfrag.MainInteractor
-import com.example.translateword.mvvm.MainViewModel
+import com.example.core.mvvm.MainViewModel
 import com.example.translateword.room.HistoryDataBase
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val application = module {

@@ -12,10 +12,10 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import com.example.translateword.R
 import com.example.translateword.databinding.FragmentDescriptionBinding
 import com.example.translateword.isOnline
+import com.example.utils.utils.AlertDialogFragment
 
 
 class DescriptionActivity : AppCompatActivity() {

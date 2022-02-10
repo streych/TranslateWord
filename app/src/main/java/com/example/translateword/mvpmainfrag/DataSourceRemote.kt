@@ -1,9 +1,8 @@
 package com.example.translateword.mvpmainfrag
 
-import com.example.translateword.data.DataModel
-import com.example.translateword.data.datasource.DataSource
-import com.example.translateword.data.datasource.RetrofitImplementation
-import io.reactivex.Observable
+import com.example.model.data.DataModel
+import com.example.repository.datasource.DataSource
+import com.example.repository.datasource.RetrofitImplementation
 
 class DataSourceRemote (
     private val remoteProvider: RetrofitImplementation = RetrofitImplementation()

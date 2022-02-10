@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.translateword.Interactor
+import com.example.core.mvvm.Interactor
 import com.example.translateword.R
-import com.example.translateword.data.AppState
-import com.example.translateword.data.DataModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.translateword.databinding.LoadingLayoutBinding
-import com.example.translateword.description.AlertDialogFragment
+import com.example.utils.utils.AlertDialogFragment
 import com.example.translateword.isOnline
-import com.example.translateword.mvvm.BaseViewMode
+import com.example.core.mvvm.BaseViewMode
 
 
 private const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"

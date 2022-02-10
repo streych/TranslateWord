@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.translateword.BaseFragment
 import com.example.translateword.R
 import com.example.translateword.SearchDialogFragment
-import com.example.translateword.data.AppState
-import com.example.translateword.data.DataModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.translateword.databinding.FragmentMainBinding
 import com.example.translateword.description.DescriptionActivity
 import com.example.translateword.description.convertMeaningsToString
 import com.example.translateword.history.HistoryActivity
 import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
-import com.example.translateword.mvvm.MainViewModel
+import com.example.core.mvvm.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : BaseFragment<AppState, MainInteractor>() {
