@@ -8,18 +8,22 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.core.mvvm.MainViewModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.translateword.BaseFragment
 import com.example.translateword.R
 import com.example.translateword.SearchDialogFragment
-import com.example.model.data.AppState
-import com.example.model.data.DataModel
 import com.example.translateword.databinding.FragmentMainBinding
 import com.example.translateword.description.DescriptionActivity
 import com.example.translateword.description.convertMeaningsToString
 import com.example.translateword.history.HistoryActivity
 import com.example.translateword.mvpmainfrag.adapter.MainFragmentAdapter
-import com.example.core.mvvm.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.example.translateword.viewById
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.koin.ext.scope
+
 
 class MainFragment : BaseFragment<AppState, MainInteractor>() {
 
@@ -27,6 +31,8 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
     private var binding: FragmentMainBinding? = null
     private var adapter: MainFragmentAdapter? = null
     override lateinit var model: MainViewModel
+    private val mainActivityRecyclerview by viewById<RecyclerView>(R.id.main_activity_recyclerview)
+    private val searchFAB by viewById<FloatingActionButton>(R.id.search_fab)
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.menu_history, menu)
@@ -54,11 +60,9 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
                         activity?.applicationContext,
                         data.text!!,
                         convertMeaningsToString(data.meanings!!),
-                        data.meanings[0].imageUrl
+                        data.meanings!![0].imageUrl
                     )
                 )
-
-
             }
         }
 
@@ -68,7 +72,7 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
     ) = FragmentMainBinding.inflate(inflater, container, false).also {
         binding = it
         setHasOptionsMenu(true)
-        val viewModel: MainViewModel by viewModel()
+        val viewModel: MainViewModel by scope.inject()
         model = viewModel
         model.subscribe().observe(requireActivity(), Observer<AppState> { renderData(it) })
     }.root
@@ -76,7 +80,7 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
     override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.searchFab?.setOnClickListener {
+        searchFAB.setOnClickListener{
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object :
                 SearchDialogFragment.OnSearchClickListener {
@@ -87,6 +91,8 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
             })
             searchDialogFragment.show(parentFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
         }
+        mainActivityRecyclerview.adapter = adapter
+
     }
 
         override fun renderData(appState: AppState) {
@@ -115,7 +121,7 @@ class MainFragment : BaseFragment<AppState, MainInteractor>() {
                     binding?.apply {
                         progressBarHorizontal.visibility = VISIBLE
                         progressBarRound.visibility = GONE
-                        progressBarHorizontal.progress = appState.progress
+                        progressBarHorizontal.progress = appState.progress!!
                     }
                 } else {
                     binding?.apply {

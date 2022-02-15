@@ -3,36 +3,50 @@ package com.example.translateword.view
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.core.databinding.LoadingLayoutBinding
+import com.example.core.mvvm.BaseViewMode
 import com.example.core.mvvm.Interactor
-import com.example.translateword.R
 import com.example.model.data.AppState
 import com.example.model.data.DataModel
-import com.example.translateword.databinding.LoadingLayoutBinding
+import com.example.model.data.OnlineLiveData
+import com.example.translateword.R
 import com.example.utils.utils.AlertDialogFragment
-import com.example.translateword.isOnline
-import com.example.core.mvvm.BaseViewMode
 
 
 private const val DIALOG_FRAGMENT_TAG = "74a54328-5d62-46bf-ab6b-cbf5d8c79522"
 
 abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity() {
 
-    private var binding: LoadingLayoutBinding? = null
-
+    private lateinit var binding: LoadingLayoutBinding
     abstract val model: BaseViewMode<T>
-    protected var isNetworkAvailable: Boolean = false
+    protected var isNetworkAvailable: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        isNetworkAvailable = isOnline(applicationContext)
+        subscribeToNetworkChange()
     }
+
+    private fun subscribeToNetworkChange() {
+        OnlineLiveData(this).observe(
+            this@BaseActivity,
+            {
+                isNetworkAvailable = it
+                if (!isNetworkAvailable) {
+                    Toast.makeText(
+                        this@BaseActivity,
+                        R.string.dialog_message_device_is_offline,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
+
 
     override fun onResume() {
         super.onResume()
         binding = LoadingLayoutBinding.inflate(layoutInflater)
-
-        isNetworkAvailable = isOnline(applicationContext)
         if (!isNetworkAvailable && isDialogNull()) {
             showNoInternetConnectionDialog()
         }
@@ -56,12 +70,12 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
             is AppState.Loading -> {
                 showViewLoading()
                 if (appState.progress != null) {
-                    binding?.progressBarHorizontal?.visibility = View.VISIBLE
-                    binding?.progressBarRound?.visibility = View.GONE
-                    binding?.progressBarHorizontal?.progress = appState.progress
+                    binding.progressBarHorizontal.visibility = View.VISIBLE
+                    binding.progressBarRound.visibility = View.GONE
+                    binding.progressBarHorizontal.progress = appState.progress!!
                 } else {
-                    binding?.progressBarHorizontal?.visibility = View.GONE
-                    binding?.progressBarRound?.visibility = View.VISIBLE
+                    binding.progressBarHorizontal.visibility = View.GONE
+                    binding.progressBarRound.visibility = View.VISIBLE
                 }
             }
             is AppState.Error -> {
@@ -84,11 +98,11 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
     }
 
     private fun showViewWorking() {
-        binding?.loadingFrameLayout?.visibility = View.GONE
+        binding.loadingFrameLayout.visibility = View.GONE
     }
 
     private fun showViewLoading() {
-        binding?.loadingFrameLayout?.visibility = View.VISIBLE
+        binding.loadingFrameLayout.visibility = View.VISIBLE
     }
 
     private fun isDialogNull(): Boolean {
@@ -96,5 +110,4 @@ abstract class BaseActivity<T : AppState, I : Interactor<T>> : AppCompatActivity
     }
 
     abstract fun setDataToAdapter(data: List<DataModel>)
-
 }

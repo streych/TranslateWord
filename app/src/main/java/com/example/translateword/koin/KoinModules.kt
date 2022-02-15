@@ -12,8 +12,19 @@ import com.example.translateword.history.HistoryInteractor
 import com.example.translateword.history.HistoryViewModel
 import com.example.translateword.mvpmainfrag.MainInteractor
 import com.example.core.mvvm.MainViewModel
+import com.example.translateword.history.HistoryActivity
+import com.example.translateword.mvpmainfrag.MainFragment
 import com.example.translateword.room.HistoryDataBase
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+
+val mainScreen = module {
+    scope(named<MainFragment>()) {
+        scoped { MainInteractor(get(), get()) }
+        viewModel { MainViewModel(get()) }
+    }
+}
 
 val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
@@ -23,12 +34,9 @@ val application = module {
     }
 }
 
-val mainScreen = module {
-    factory { MainViewModel(get()) }
-    factory { MainInteractor(get(), get()) }
-}
-
 val historyScreen = module {
-    factory { HistoryViewModel(get()) }
-    factory { HistoryInteractor(get(), get()) }
+    scope(named<HistoryActivity>()) {
+        scoped { HistoryInteractor(get(), get()) }
+        viewModel { HistoryViewModel(get()) }
+    }
 }

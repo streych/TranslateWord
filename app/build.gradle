@@ -27,6 +27,9 @@ android {
 
 dependencies {
 
+    implementation "com.github.moxy-community:moxy:2.1.2"
+    kapt "com.github.moxy-community:moxy-compiler:2.1.2"
+
     implementation project(Modules.model)
     implementation project(Modules.utils)
     implementation project(Modules.Core)

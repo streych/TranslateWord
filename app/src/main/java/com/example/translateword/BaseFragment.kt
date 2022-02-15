@@ -1,11 +1,12 @@
 package com.example.translateword
 
+import androidx.fragment.app.Fragment
 import com.example.model.data.AppState
 import com.example.core.mvvm.BaseViewMode
 import com.example.core.mvvm.Interactor
-import moxy.MvpAppCompatFragment
 
-abstract class BaseFragment<T : AppState, I : Interactor<T>> : MvpAppCompatFragment() {
+
+abstract class BaseFragment<T : AppState, I : Interactor<T>> : Fragment() {
 
     abstract val model: BaseViewMode<T>
 

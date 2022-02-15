@@ -11,7 +11,7 @@ import com.example.translateword.description.DescriptionActivity
 import com.example.translateword.view.BaseActivity
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 import java.util.*
 
 class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
@@ -65,14 +65,14 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
 
 
     override fun setDataToAdapter(data: List<DataModel>) {
-        adapter?.setData(data)
+        adapter.setData(data)
     }
 
     private fun iniViewModel() {
         if (binding.historyActivityRecyclerview.adapter != null) {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
-        val viewModel: HistoryViewModel by viewModel()
+        val viewModel: HistoryViewModel by currentScope.inject()
         model = viewModel
         model.subscribe().observe(this@HistoryActivity, Observer<AppState> { renderData(it) })
     }
