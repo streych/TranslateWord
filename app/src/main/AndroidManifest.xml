@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.translateword">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".cicerone.App"
@@ -20,6 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".description.DescriptionActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".history.HistoryActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

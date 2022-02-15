@@ -1,13 +1,14 @@
 package com.example.translateword.mvpmainfrag
 
-import com.example.translateword.DataModel
-import com.example.translateword.DataSource
-import io.reactivex.Observable
+import com.example.model.data.DataModel
+import com.example.repository.datasource.DataSource
+import com.example.repository.datasource.RetrofitImplementation
 
 class DataSourceRemote (
-    private val remoteProvider: RetrofitImplementation = RetrofitImplementation())
+    private val remoteProvider: RetrofitImplementation = RetrofitImplementation()
+)
     : DataSource<List<DataModel>> {
 
-    override fun getData(word: String): Observable<List<DataModel>> = remoteProvider.getData(word)
+    override suspend fun getData(word: String): List<DataModel> = remoteProvider.getData(word)
 
 }
