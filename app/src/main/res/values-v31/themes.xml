@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Theme.TranslateWord" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
@@ -12,9 +13,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowSplashScreenBackground ">@color/color_error</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_android</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_search</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/color_gray</item>
-        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_apple</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_no_photo_vector</item>
     </style>
 </resources>

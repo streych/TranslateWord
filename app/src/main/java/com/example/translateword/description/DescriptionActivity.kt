@@ -2,11 +2,16 @@ package com.example.translateword.description
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import coil.decode.DataSource
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -80,7 +85,10 @@ class DescriptionActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun useGlideToLoadPhoto(imageView: ImageView, imageLink: String) {
+        val blurEffect = RenderEffect.createBlurEffect(16f, 16f, Shader.TileMode.MIRROR)
+        imageView.setRenderEffect(blurEffect)
         Glide.with(imageView)
             .load("https:$imageLink")
             .listener(object : RequestListener<Drawable> {
