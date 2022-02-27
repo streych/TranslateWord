@@ -1,0 +1,16 @@
+R_DEF: Internal format may change without notice
+local
+color colorAccent
+color colorPrimary
+color colorPrimaryDark
+color color_white_transparent
+id loading_frame_layout
+id progress_bar_horizontal
+id progress_bar_round
+layout loading_layout
+string app_name
+string dialog_message_device_is_offline
+string dialog_title_device_is_offline
+string dialog_tittle_sorry
+string empty_server_response_on_success
+string error_stub

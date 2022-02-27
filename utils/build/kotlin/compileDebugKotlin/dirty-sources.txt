@@ -1,0 +1,4 @@
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\utils\src\main\java\com\example\utils\utils\EquilateralImageView.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\utils\src\main\java\com\example\utils\utils\UIUtils.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\utils\src\main\java\com\example\utils\utils\utils.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\utils\src\main\java\com\example\utils\utils\AlertDialogFragment.kt

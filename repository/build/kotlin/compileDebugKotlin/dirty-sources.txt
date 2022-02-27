@@ -1,0 +1,10 @@
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\api\ApiService.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\repository\Repository.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\datasource\DataSourceLocal.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\repository\RepositoryLocal.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\api\BaseInterceptor.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\datasource\DataSource.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\datasource\RetrofitImplementation.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\repository\RepositoryImplementation.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\repository\RepositoryImplementationLocal.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\repository\src\main\java\com\example\repository\datasource\RoomDataBaseImplementation.kt

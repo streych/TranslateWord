@@ -1,0 +1,3 @@
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\Core\src\main\java\com\example\core\mvvm\BaseViewMode.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\Core\src\main\java\com\example\core\mvvm\MainViewModel.kt
+C:\Users\Robo\AndroidStudioProjects\TranslateWord\Core\src\main\java\com\example\core\mvvm\Interactor.kt

@@ -1,0 +1,4 @@
+R_DEF: Internal format may change without notice
+local
+string dialog_button_cancel
+string dialog_title_stub

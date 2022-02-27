@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="color_white_transparent">#80FFFFFF</color>
+    <string name="app_name">core</string>
+    <string name="dialog_message_device_is_offline">You can not use app without internet connection. Please, check
+       internet connection.
+   </string>
+    <string name="dialog_title_device_is_offline">No internet connection</string>
+    <string name="dialog_tittle_sorry">Sorry</string>
+    <string name="empty_server_response_on_success">Couldn\'t find any definitions</string>
+    <string name="error_stub">Error</string>
+</resources>
